@@ -1,0 +1,54 @@
+\documentclass{standalone}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{lmodern}
+\usepackage{listings}
+\lstset{escapeinside={(*}{*)},   basicstyle=\ttfamily,
+    breaklines=true,
+    columns=fixed,
+    fontadjust=true,
+    basewidth=0.5em
+    }  
+
+\begin{document}
+
+
+\begin{lstlisting}
+	(*\bf begin CASL*)
+
+	%%  Continuous Endomorphism
+
+	(*\bf spec*) (*{\textsc{ContEndo}*) =	    
+	(*\bf sorts*)	Sets, A, TA, PA;
+	A, TA, PA < Sets;
+	TA < PA,
+	%%  A = domain and codomain of the function, TA = topology of A, PA = powerset of A
+	(*\bf ops*)   EmpSet, A', TA', PA' : Sets;
+	__ (*$\in$*) __ : Sets (*$\times$*) Sets
+	__ inter __ : Sets (*$\times$*) Sets (*$\mapsto$*) Sets
+	Uni__ : Sets
+	f : A (*$\mapsto$*) A
+	inversef : TA (*$\mapsto$*) TA 
+	%%  Definition of A, TA and PA
+	(*\bf preds *)(*$\forall$*) a : Sets. a : A (*$\Leftrightarrow$*) a (*$\in$*) A'
+	(*$\forall$*) x : Sets. x : TA (*$\Leftrightarrow$*) x (*$\in$*) TA'
+	(*$\forall$*) y : Sets. y : PA (*$\Leftrightarrow$*) y (*$\in$*) PA'  
+	(*$\forall$*) e : Sets. (*$\lnot$*)(e (*$\in$*) EmpSet)
+	(*$\forall$*) z : Sets. z (*$\in$*) PA' (*$\Leftrightarrow$*) (*$\forall$*) p : Sets. (p (*$\in$*) z (*$\Rightarrow$*) p (*$\in$*) A')
+	(*$\forall$*) a : Sets. x (*$\in$*) TA' (*$\Rightarrow$*) x (*$\in$*) PA'  
+	(*$\forall$*) q, r, s : Sets. (q (*$\in$*) r inter s (*$\Leftrightarrow$*) q (*$\in$*) r (*$\land$*) q (*$\in$*) s)
+	(*$\forall$*) a : Sets. (*$\forall$*) b : Sets. (b (*$\in$*) Uni a (*$\Leftrightarrow$*) (*$\exists$*) c : Sets. b (*$\in$*) c (*$\land$*) c (*$\in$*) a)
+	%%  Specific axioms for a A as topological space
+	EmptySet (*$\in$*) TA'
+	A' in TA'
+	(*$\forall$*) a, b : TA. a inter b : TA 
+	(*$\forall$*) c : TA. Uni c : TA
+	%%  Inverse image of a set under a function
+	(*$\forall$*) q : TA. (*$\forall$*) x : Sets. 
+	x (*$\in$*) inversef(q) (*$\Leftrightarrow$*) f(x) in A
+	%%  Condition of continuity
+	(*$\forall$*) x : PA. (x : TA (*$\Rightarrow$*) inversef(x) in TA')
+	(*\bf end*)
+\end{lstlisting}
+
+\end{document}

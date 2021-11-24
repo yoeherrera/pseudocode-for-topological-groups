@@ -1,0 +1,186 @@
+\documentclass{standalone}
+
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{lmodern}
+\usepackage{listings}
+\lstset{escapeinside={(*}{*)},   basicstyle=\ttfamily,
+    breaklines=true,
+    columns=fixed,
+    fontadjust=true,
+    basewidth=0.5em
+    }  
+
+\begin{document}
+
+\begin{lstlisting}
+	
+	(*\bf begin CASL*)
+	
+	%% Continuous Function 
+	
+	(*\bf spec*) ContFunc =
+	
+	(*\bf sorts*)   Sets, A, TA, PA, B, TB, PB;
+	A, TA, PA, B, TB, PB < Sets;
+	TA < PA; TB < PB;
+	
+	%% A = domain of the function, TA = topology of A, PA = powerset of A
+	%% B = codomain of the function, TB = topology of B, PB = powerset of B
+	
+	(*\bf ops*)     EmpSet, A', TA', PA', B', TB', PB' : Sets;
+	__ inter __ : Sets (*$\times$*) Sets (*$\to$*) Sets
+	Uni__ : Sets (*$\to$*) Sets
+	f: A (*$\to$*) B
+	inversef: TB (*$\to$*) TA 
+	
+	(*\bf preds*)   __ subset __ : Sets (*$\times$*) Sets
+	__ el __ : Sets (*$\times$*) Sets 
+	
+	%% Definition of A, TA and PA
+	(*$\forall$*)x : Sets
+	.x (*$\in$*) A (*$\Leftrightarrow$*) x el A'
+	.x (*$\in$*) TA (*$\Leftrightarrow$*) x el TA'
+	.x (*$\in$*) PA (*$\Leftrightarrow$*) x el PA'
+	
+	%% Definition of B, TB and PB
+	(*$\forall$*)x : Sets
+	.x (*$\in$*) B (*$\Leftrightarrow$*) x el B'
+	.x (*$\in$*) TB (*$\Leftrightarrow$*) x el TB'
+	.x (*$\in$*) PB (*$\Leftrightarrow$*) x el PB'
+	
+	%% Definition of subset
+	(*$\forall$*)x, y, z : Sets
+	.x subset y (*$\Leftrightarrow$*) (z el x (*$\Rightarrow$*) z el y)
+	
+	%% Definition of ops
+	(*$\forall$*)x : Sets
+	..(*$\lnot$*)(x el EmpSet)
+	.x el PA' (*$\Leftrightarrow$*) x subset A'  
+	.x el PB' (*$\Leftrightarrow$*) x subset B'  
+	.TA' subset PA'  
+	.TB' subset PB'  
+	(*$\forall$*)x, y, z : Sets
+	. x el y inter z (*$\Leftrightarrow$*) x el y (*$\wedge$*) x el z 
+	(*$\forall$*)x, y : Sets
+	.x el Uni y (*$\Leftrightarrow$*) (*$\exists$*) z : Sets. z el y (*$\wedge$*) x el z
+	
+	%% Specific axioms for a A as topological space
+	.EmpSet el TA'
+	.A' el TA'
+	(*$\forall$*)x, y : TA. x inter y el TA'
+	(*$\forall$*)x : Sets. x subset TA' (*$\Rightarrow$*) Uni x el TA'
+	
+	%% Specific axioms for a B as topological space
+	.EmpSet el TB'
+	.B' el TB'
+	(*$\forall$*)x, y : TB. x inter y el TB'
+	(*$\forall$*)x : Sets. x subset TB' (*$\Rightarrow$*) Uni x el TB'
+	
+	%% Inverse image of a set under a function
+	(*$\forall$*)y : TB. (*$\forall$*)x : A. x el inversef(y) (*$\Leftrightarrow$*) f(x) el y 
+	
+	%% Condition of continuity
+	(*$\forall$*)y : TB. inversef(y) el TA'   
+	
+	(*\bf end*)
+	
+	
+	
+	(*\bf spec*) PerfSqTopSp =
+	
+	
+	(*\bf sorts*)   Sets, X, TX, PX, XX, TXX, PXX;
+	X, TX, PX, XX, TXX, PXX < Sets;
+	TX < PX; TXX < PXX;
+	
+	(*\bf ops*)     EmpSet, X', TX', PX', XX', TXX', PXX' : Sets;
+	__ inter __ : Sets (*$\times$*) Sets (*$\to$*) Sets
+	__ ordpair __ : Sets (*$\times$*) Sets-> Sets
+	__ prod __ : Sets (*$\times$*) Sets (*$\to$*) Sets
+	Uni__ : Sets (*$\to$*) Sets
+	
+	(*\bf preds*)   __ el __ : Sets
+	__ subset __ : Sets (*$\times$*) Sets;
+	
+	%% X' and so on simulate the sorts
+	(*$\forall$*)x : Sets
+	.x (*$\in$*) X (*$\Leftrightarrow$*) x el X'
+	.x (*$\in$*) TX (*$\Leftrightarrow$*) x el TX'
+	.x (*$\in$*) PX (*$\Leftrightarrow$*) x el PX'
+	.x (*$\in$*) XX (*$\Leftrightarrow$*) x el XX'
+	.x (*$\in$*) TXX (*$\Leftrightarrow$*) x el TXX'
+	.x (*$\in$*) PXX (*$\Leftrightarrow$*) x el PXX'
+	
+	%% Definition of subset
+	(*$\forall$*)x, y, z : Sets
+	.x subset y (*$\Leftrightarrow$*) (z el x (*$\Rightarrow$*) z el y)
+	
+	%% Definition of ops
+	(*$\forall$*)x : Sets
+	.(*$\lnot$*)( x el EmpSet)
+	.x el PX' (*$\Leftrightarrow$*) x subset X'  
+	.TX' subset PX'  
+	.x el PXX' (*$\Leftrightarrow$*) x subset XX'  
+	.TX' subset PX'  
+	.TXX' subset PXX'  
+	(*$\forall$*)x, y, z : Sets . x el y inter z (*$\Leftrightarrow$*) x el y (*$\wedge$*) x el z 
+	(*$\forall$*)x, y : Sets . x el Uni y (*$\Leftrightarrow$*) (*$\exists$*) z : Sets. z el y (*$\wedge$*) x el z
+	
+	%% Defining ordpair
+	(*$\forall$*)x, y, z : Sets. z el x ordpair y (*$\Leftrightarrow$*) (*$\forall$*)s : Sets. (s el z (*$\Leftrightarrow$*) s = x) (*$\lor$*) (s el z (*$\Leftrightarrow$*) s = x (*$\lor$*) s = y)  
+	
+	%% Defining prod
+	(*$\forall$*)A, B, z : Sets . z el A prod B (*$\Leftrightarrow$*) (*$\exists$*) x, y : Sets . x el A (*$\wedge$*) y el B (*$\wedge$*) z = x ordpair y 	
+	
+	%%Specific axioms for a X as topological space
+	.EmpSet el TX'
+	.X' el TX'
+	(*$\forall$*)x, y : TX. x inter y el TX'
+	(*$\forall$*)x : Sets. x subset TX' (*$\Rightarrow$*) Uni x el TX'
+	
+	
+	%%Specific axioms for XX as topological space
+	.EmpSet el TXX'
+	.XX' el TXX'
+	(*$\forall$*)x, y : TXX. x inter y el TXX'
+	(*$\forall$*)x : Sets. x subset TXX' (*$\Rightarrow$*) Uni x el TXX'
+	
+	%% XX' is product and TXX' is the product topology
+	. XX' = X' prod X'
+	(*$\forall$*)z: Sets . z el TXX' <=> (*$\forall$*)w: Sets .(w el z => exists x, y : TX . w el x prod y /\  x prod y subset z) 
+	
+	(*\bf end*)
+	
+	
+	(*\bf spec*) Generic =
+	
+	(*\bf sorts*)   Sets, X, XX, TX, TXX, PX, PXX;
+	
+	ops 	EmpSet, X', XX', TX', TXX', PX', PXX' : Sets
+	__ inter __ : Sets (*$\times$*) Sets (*$\to$*) Sets
+	Uni__ : Sets (*$\to$*) Sets
+	
+	(*\bf preds*)   __ el __ : Sets (*$\times$*) Sets;
+	__ subset __ : Sets (*$\times$*) Sets;
+	
+	(*\bf end*)
+	
+	
+	view I1 : Generic to PerfSqTopSp =
+	
+	Sets (*$\mapsto$*) Sets, X (*$\mapsto$*) X, XX (*$\mapsto$*) XX, TX (*$\mapsto$*) TX, TXX (*$\mapsto$*) TXX, PX (*$\mapsto$*) PX, PXX (*$\mapsto$*) PXX, X' (*$\mapsto$*) X', XX' (*$\mapsto$*) XX', TX' (*$\mapsto$*) TX', TXX' (*$\mapsto$*) TXX', PX' (*$\mapsto$*) PX', PXX' (*$\mapsto$*) PXX', EmpSet (*$\mapsto$*) EmpSet, __ el __ (*$\mapsto$*) __ el __, __ subset __ (*$\mapsto$*) __ subset __, __ inter __ (*$\mapsto$*) __ inter__, Uni__ (*$\mapsto$*) Uni__
+	
+	(*\bf end*)
+	
+	
+	view I2 : Generic to ContFunc =
+	
+	Sets (*$\mapsto$*) Sets, X (*$\mapsto$*) B, XX (*$\mapsto$*) A, TX (*$\mapsto$*) TB, TXX (*$\mapsto$*) TA, PX (*$\mapsto$*) PB, PXX (*$\mapsto$*) PA, X' (*$\mapsto$*) B', XX' (*$\mapsto$*) A', TX' (*$\mapsto$*) TB', TXX' (*$\mapsto$*) TA', PX' (*$\mapsto$*) PB', PXX' (*$\mapsto$*) PA', EmpSet (*$\mapsto$*) EmpSet, __ el __ (*$\mapsto$*) __ el __, __ subset __ (*$\mapsto$*) __ subset__, __ inter __ (*$\mapsto$*) __ inter __, Uni__ (*$\mapsto$*) Uni__
+	
+	(*\bf end*)
+	
+	(*\bf spec*) Colimit = combine I1, I2
+	\end{lstlisting}
+
+\end{document}
